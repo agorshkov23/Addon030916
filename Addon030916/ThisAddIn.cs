@@ -1,21 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Excel = Microsoft.Office.Interop.Excel;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
+using Microsoft.Office.Interop.Excel;
 
 namespace Addon030916
 {
     public partial class ThisAddIn
     {
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        public void ZeroNegative()
+        {
+            foreach (Range cell in Application.Selection)
+            {
+                if (cell.Value2 is Double && cell.Value2 < 0.0)
+                {
+                    cell.Value2 = 0.0;
+                }
+            }
+        }
+
+        public void BankRound()
+        {
+            foreach (Range cell in Application.Selection)
+            {
+                if (cell.Value2 is Double)
+                {
+                    cell.Value2 = Math.Round(cell.Value2);
+                }
+            }
+        }
+
+        private void ThisAddIn_Startup(object sender, EventArgs e)
         {
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
         }
 
@@ -27,8 +43,8 @@ namespace Addon030916
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            Startup += new EventHandler(ThisAddIn_Startup);
+            Shutdown += new EventHandler(ThisAddIn_Shutdown);
         }
         
         #endregion
